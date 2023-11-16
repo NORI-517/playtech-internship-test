@@ -1,23 +1,23 @@
 public class Match {
-    private String id;
+    private String uuid;
     private double rateA;
     private double rateB;
     private String result;
 
-    public Match(String id, double rateA, double rateB, String result){
-        this.id = id;
+    public Match(String uuid, double rateA, double rateB, String result) {
+        this.uuid = uuid;
         this.rateA = rateA;
         this.rateB = rateB;
         this.result = result;
     }
-    /* 
-    public void show(){
+
+    // show the whole match info
+    public void show() {
         System.out.println(
-            this.id+", "+
-            this.rateA+", "+
-            this.rateB+", "+
-            this.result
-        );
+                this.uuid + ", " +
+                this.rateA + ", " +
+                this.rateB + ", " +
+                this.result);
     }
-    */
+
 }

@@ -13,7 +13,5 @@ class Player{
     public Player(){
     }
 }
-class Host{
-    
-}
+
 
