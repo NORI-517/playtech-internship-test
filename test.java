@@ -1,8 +1,10 @@
+import java.util.List;
+
 public class test {
+    List<Player> players;
+    List<Match> matches;
+    long casinoBalance;
     public static void main(String[]args){
-        Player player1 = new Player();
-        Player player2 = new Player();
-        Match round1 = new Match(player1,player2);
 
     }
 }
@@ -15,12 +17,3 @@ class Host{
     
 }
 
-class Match{
-    Player sideA;
-    Player sideB;
-    Match(Player sideA, Player sideB){
-        this.sideA = sideA;
-        this.sideB = sideB;
-    }
-
-}

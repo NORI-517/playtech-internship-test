@@ -1,21 +1,51 @@
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CasinoSimulation {
     List<Player> players;
-    List<Match> matches;
+    static List<Match> matches = new ArrayList<>();
     long casinoBalance;
 
     // コンストラクタと必要なメソッドの実装
 
     public static void main(String[] args) {
-        // ファイルからデータ読み込み
+        matchDataReader("sample/match_data.txt");
 
-        // プレイヤーの操作を実行
-
-        // マッチの結果を計算
-
-        // 結果をファイルに書き込み
-
-        // カジノホストバランスの更新
+    }
+    public static void playerDataReader(String fileLocation){
+        //Match_dataからデータを引っ張ってきてmatchesに追加する
+        try {
+			RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
+			String str;
+			while ((str = file.readLine()) != null) {
+                matches.add(new Match(
+                    str.substring(0,36),
+                    Double.parseDouble(str.substring(37, 41)),
+                    Double.parseDouble(str.substring(42, 46)),
+                    str.substring(47)));
+			}
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    public static void matchDataReader(String fileLocation){
+        //Match_dataからデータを引っ張ってきてmatchesに追加する
+        try {
+			RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
+			String str;
+			while ((str = file.readLine()) != null) {
+                matches.add(new Match(
+                    str.substring(0,36),
+                    Double.parseDouble(str.substring(37, 41)),
+                    Double.parseDouble(str.substring(42, 46)),
+                    str.substring(47)));
+			}
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 }

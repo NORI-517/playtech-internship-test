@@ -9,7 +9,6 @@ public class Player {
     }
 
     void bet(){
-        totalBets++;
     }
     void deposit(){
 
