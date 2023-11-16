@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CasinoSimulation {
     // List of players
-    List<Player> players = new ArrayList<>();
+    static List<Player> players = new ArrayList<>();
     // List of matches
     static List<Match> matches = new ArrayList<>();
     // Casino host balance
@@ -13,9 +13,8 @@ public class CasinoSimulation {
 
     public static void main(String[] args) {
         matchDataReader("sample/match_data.txt");
-        for (Match each : matches) {
-            each.show();
-        }
+        playerDataReader("sample/player_data.txt");
+        System.out.println(players);
     }
 
     public static void playerDataReader(String fileLocation) {
@@ -24,11 +23,17 @@ public class CasinoSimulation {
             RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
             String str;
             while ((str = file.readLine()) != null) {
-                matches.add(new Match(
-                        str.substring(0, 36),
-                        Double.parseDouble(str.substring(37, 41)),
-                        Double.parseDouble(str.substring(42, 46)),
-                        str.substring(47)));
+                String playerID = str.substring(0, 36);
+                boolean playerExists = false;
+                for (Player each : players) {
+                    if (each.getUuid().equals(playerID)) {
+                        playerExists = true;
+                        break;
+                    }
+                }
+                if (!playerExists) {
+                    players.add(new Player(playerID));
+                }
             }
             file.close();
         } catch (IOException e) {

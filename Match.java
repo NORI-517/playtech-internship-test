@@ -11,13 +11,16 @@ public class Match {
         this.result = result;
     }
 
+    public void matchExcute() {
+
+    }
+
     // show the whole match info
     public void show() {
         System.out.println(
                 this.uuid + ", " +
-                this.rateA + ", " +
-                this.rateB + ", " +
-                this.result);
+                        this.rateA + ", " +
+                        this.rateB + ", " +
+                        this.result);
     }
-
 }
