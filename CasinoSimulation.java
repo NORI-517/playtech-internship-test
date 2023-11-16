@@ -14,7 +14,24 @@ public class CasinoSimulation {
     public static void main(String[] args) {
         matchDataReader("sample/match_data.txt");
         playerDataReader("sample/player_data.txt");
-        System.out.println(players);
+    }
+
+    public static int playerCheck(String playerId) {
+        // Based to the UUID, if there's new player, add to the players list
+        //returns index of the player in the players list
+        boolean playerExists = false;
+        int count = 0;
+        for (Player each : players) {
+            if (each.getUuid().equals(playerId)) {
+                playerExists = true;
+                return count;
+            }
+            count++;
+        }
+        if (!playerExists) {
+            players.add(new Player(playerId));
+        }
+        return players.size()-1;
     }
 
     public static void playerDataReader(String fileLocation) {
@@ -23,16 +40,14 @@ public class CasinoSimulation {
             RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
             String str;
             while ((str = file.readLine()) != null) {
-                String playerID = str.substring(0, 36);
-                boolean playerExists = false;
-                for (Player each : players) {
-                    if (each.getUuid().equals(playerID)) {
-                        playerExists = true;
-                        break;
-                    }
-                }
-                if (!playerExists) {
-                    players.add(new Player(playerID));
+                String[] each = str.split("[,]",0);
+                switch(each[1]){
+                    case "BET":
+                    break;
+                    case "DEPOSIT":
+                    break;
+                    case "WITHDRAW":
+                    break;
                 }
             }
             file.close();
