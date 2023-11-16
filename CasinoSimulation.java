@@ -35,18 +35,23 @@ public class CasinoSimulation {
     }
 
     public static void playerDataReader(String fileLocation) {
-        // Match_dataからデータを引っ張ってきてmatchesに追加する
+        //get data from player_data and excute 
         try {
             RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
             String str;
             while ((str = file.readLine()) != null) {
                 String[] each = str.split("[,]",0);
+                //index of current player on players list
+                int playerNum = playerCheck(each[0]);
                 switch(each[1]){
                     case "BET":
+                        
                     break;
                     case "DEPOSIT":
+                        players.get(playerNum).deposit(Integer.parseInt(each[3]));
                     break;
                     case "WITHDRAW":
+                        players.get(playerNum).withdraw(Integer.parseInt(each[3]));
                     break;
                 }
             }
