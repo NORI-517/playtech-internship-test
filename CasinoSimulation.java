@@ -18,7 +18,7 @@ public class CasinoSimulation {
 
     public static int playerCheck(String playerId) {
         // Based to the UUID, if there's new player, add to the players list
-        //returns index of the player in the players list
+        // returns index of the player in the players list
         boolean playerExists = false;
         int count = 0;
         for (Player each : players) {
@@ -31,28 +31,28 @@ public class CasinoSimulation {
         if (!playerExists) {
             players.add(new Player(playerId));
         }
-        return players.size()-1;
+        return players.size() - 1;
     }
 
     public static void playerDataReader(String fileLocation) {
-        //get data from player_data and excute 
+        // get data from player_data and excute
         try {
             RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
             String str;
             while ((str = file.readLine()) != null) {
-                String[] each = str.split("[,]",0);
-                //index of current player on players list
+                String[] each = str.split("[,]", 0);
+                // index of current player on players list
                 int playerNum = playerCheck(each[0]);
-                switch(each[1]){
+                switch (each[1]) {
                     case "BET":
-                        
-                    break;
+
+                        break;
                     case "DEPOSIT":
                         players.get(playerNum).deposit(Integer.parseInt(each[3]));
-                    break;
+                        break;
                     case "WITHDRAW":
                         players.get(playerNum).withdraw(Integer.parseInt(each[3]));
-                    break;
+                        break;
                 }
             }
             file.close();
@@ -68,15 +68,12 @@ public class CasinoSimulation {
             // get each line from the file and change the data type and store in matches
             // list as Match
             while ((str = file.readLine()) != null) {
+                // split the row with ","
+                String[] each = str.split("[,]", 0);
+                // add splitted & formatted into the match list
                 matches.add(new Match(
-                        // UUID
-                        str.substring(0, 36),
-                        // Rate A
-                        Double.parseDouble(str.substring(37, 41)),
-                        // Rate B
-                        Double.parseDouble(str.substring(42, 46)),
-                        // Match result
-                        str.substring(47)));
+                        // UUID, Rate A,Rate B,Match result
+                        each[0], Double.parseDouble(each[1]), Double.parseDouble(each[2]), each[3]));
             }
             file.close();
         } catch (IOException e) {
