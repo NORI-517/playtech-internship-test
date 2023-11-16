@@ -11,8 +11,8 @@ public class Match {
         this.result = result;
     }
 
-    public void matchExcute() {
-
+    public void matchExcute(Match match, Player player) {
+        
     }
 
     // show the whole match info
