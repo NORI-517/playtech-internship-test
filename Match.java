@@ -11,8 +11,13 @@ public class Match {
         this.result = result;
     }
 
-    public void matchExcute(Match match, Player player) {
-        
+    public String getuuid() {
+        return this.uuid;
+    }
+
+    // excute the match
+    public void matchExcute(Player player, String matchUuid, int bet, char BetOn) {
+        //incomplete
     }
 
     // show the whole match info

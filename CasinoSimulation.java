@@ -40,18 +40,25 @@ public class CasinoSimulation {
             RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
             String str;
             while ((str = file.readLine()) != null) {
-                String[] each = str.split("[,]", 0);
+                String[] eachPlayer = str.split("[,]", 0);
                 // index of current player on players list
-                int playerNum = playerCheck(each[0]);
-                switch (each[1]) {
+                int playerNum = playerCheck(eachPlayer[0]);
+                switch (eachPlayer[1]) {
                     case "BET":
-
+                        for (Match eachMatch : matches) {
+                            if (eachPlayer[1].equals(eachMatch.getuuid()))
+                                eachMatch.matchExcute(
+                                    players.get(playerNum), 
+                                    eachPlayer[2], 
+                                    Integer.parseInt(eachPlayer[3]), 
+                                    eachPlayer[4].charAt(0));
+                        }
                         break;
                     case "DEPOSIT":
-                        players.get(playerNum).deposit(Integer.parseInt(each[3]));
+                        players.get(playerNum).deposit(Integer.parseInt(eachPlayer[3]));
                         break;
                     case "WITHDRAW":
-                        players.get(playerNum).withdraw(Integer.parseInt(each[3]));
+                        players.get(playerNum).withdraw(Integer.parseInt(eachPlayer[3]));
                         break;
                 }
             }
