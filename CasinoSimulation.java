@@ -8,16 +8,19 @@ public class CasinoSimulation {
     static List<Player> players = new ArrayList<>();
     // List of matches
     static List<Match> matches = new ArrayList<>();
-    // Casino host balance
-    long casinoBalance = 0;
+    // List of illegal operation
+    static List<String> illegalAction = new ArrayList<>();
 
+    // Main method
     public static void main(String[] args) {
+        Host host = new Host();
         matchDataReader("sample/match_data.txt");
-        playerDataReader("sample/player_data.txt");
+        playerDataExcuter(host,"sample/player_data.txt");
+        System.out.println(host.getCasinoBalance());
     }
 
+    // Based to the UUID, if there's new player, add to the players list
     public static int playerCheck(String playerId) {
-        // Based to the UUID, if there's new player, add to the players list
         // returns index of the player in the players list
         boolean playerExists = false;
         int count = 0;
@@ -34,8 +37,10 @@ public class CasinoSimulation {
         return players.size() - 1;
     }
 
-    public static void playerDataReader(String fileLocation) {
-        // get data from player_data and excute
+    // get data from player_data and excute
+    // Read the file and excute line by line without storing
+    public static void playerDataExcuter(Host host,String fileLocation) {
+
         try {
             RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
             String str;
@@ -48,12 +53,12 @@ public class CasinoSimulation {
                         for (Match eachMatch : matches) {
                             if (eachPlayer[2].equals(eachMatch.getuuid()))
                                 eachMatch.matchExcute(
-                                    players.get(playerNum), 
-                                    eachPlayer[2], 
-                                    Integer.parseInt(eachPlayer[3]), 
-                                    eachPlayer[4],
-                                    eachMatch
-                                    );
+                                        host,
+                                        players.get(playerNum),
+                                        eachPlayer[2],
+                                        Integer.parseInt(eachPlayer[3]),
+                                        eachPlayer[4],
+                                        eachMatch);
                         }
                         break;
                     case "DEPOSIT":
@@ -70,6 +75,7 @@ public class CasinoSimulation {
         }
     }
 
+    // read the match data and store in list matches
     public static void matchDataReader(String fileLocation) {
         try {
             RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
@@ -88,5 +94,17 @@ public class CasinoSimulation {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // handle the illegal operation
+    public static void illegalOperationDealer(Host host,Player player, String action) {
+        illegalAction.add(action);
+        player.getBalance();
+        host.setCasinoBalance(host.getCasinoBalance()+player.getTotalEarn());
+    }
+
+    // write output
+    public static void resultPrinter() {
+
     }
 }
