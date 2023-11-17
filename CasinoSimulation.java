@@ -16,6 +16,8 @@ public class CasinoSimulation {
         Host host = new Host();
         matchDataReader("sample/match_data.txt");
         playerDataExcuter(host,"sample/player_data.txt");
+        System.out.println(players.get(0).getBalance());
+        System.out.println(players.get(0).winrate());
         System.out.println(host.getCasinoBalance());
     }
 
@@ -99,9 +101,15 @@ public class CasinoSimulation {
 
     // handle the illegal operation
     public static void illegalOperationDealer(Host host,Player player, String action) {
+        System.out.println("deposit: "+player.getBalance());
+        System.out.println("earn:"+ player.getTotalEarn());
+        System.out.println(player.winrate());
+        System.out.println(player.getUuid());
+        System.out.println(players.get(0).getBalance());
         illegalAction.add(action);
         player.getBalance();
         host.setCasinoBalance(host.getCasinoBalance()+player.getTotalEarn());
+        System.out.println("host balance: "+host.getCasinoBalance());
     }
 
     // write output

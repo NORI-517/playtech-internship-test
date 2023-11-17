@@ -45,30 +45,32 @@ public class Match {
                 if (match.result.equals("A")) {
                     // if you win & bet on A
                     // calculated reward will be added to the players balance
-                    int reward = (int) (player.getBalance() - bet + bet * match.getRateA());
+                    int reward = (int) (player.getBalance() + bet * match.getRateA());
                     player.setBalance(reward);
                     player.setTotalEarn(player.getTotalEarn() + reward);
                     // withdraw coin from casino host balance
-                    host.setCasinoBalance((int) (host.getCasinoBalance() - bet * match.getRateA()));
+                    host.setCasinoBalance((int) (host.getCasinoBalance() + bet - bet * match.getRateA()));
                 } else {
                     // if you win & bet on B
                     // calculated reward will be added to the players balance
-                    int reward = (int) (player.getBalance() - bet + bet * match.getRateB());
+                    int reward = (int) (player.getBalance() + bet * match.getRateB());
                     player.setBalance(reward);
                     player.setTotalEarn(player.getTotalEarn() + reward);
                     // withdraw coin from casino host balance
-                    host.setCasinoBalance((int) (host.getCasinoBalance() - bet * match.getRateB()));
+                    host.setCasinoBalance((int) (host.getCasinoBalance() + bet - bet * match.getRateB()));
                 }
             } else if (match.result.equals("DRAW")) {
             } else {
                 // if you lose
                 // withdraw coin from players balance
                 player.setBalance(player.getBalance() - bet);
-                player.setTotalEarn(player.getTotalEarn() + bet);
+                player.setTotalEarn(player.getTotalEarn() - bet);
                 // add coin to the casino host balance
                 host.setCasinoBalance(host.getCasinoBalance() + bet);
             }
         }
+        System.out.println("player Earn: "+player.getTotalEarn());
+        System.out.println("Host Earn: "+host.getCasinoBalance());
         return true;
     }
 }

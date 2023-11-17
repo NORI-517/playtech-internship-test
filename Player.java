@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-
+//import java.lang.Math;
 public class Player {
     private String uuid;
     private long balance;
@@ -47,6 +46,10 @@ public class Player {
         this.totalEarn = earn;
     }
 
+    public int getTotalMatchs() {
+        return this.totalMatchs;
+    }
+
     public void deposit(long addMoney) {
         // coin and real money are same rate? I've never been casino
         this.balance += addMoney;
@@ -71,5 +74,10 @@ public class Player {
     // Count total match the player played
     public void matchCouont() {
         this.totalMatchs += 1;
+    }
+
+    public double winrate(){
+        return (double)((int)((double)this.totalWins/this.totalMatchs*100))/100;
+        //This doesnt work somehow Math.round((double)this.totalWins/this.totalMatchs*100)/100;
     }
 }
