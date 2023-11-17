@@ -46,12 +46,14 @@ public class CasinoSimulation {
                 switch (eachPlayer[1]) {
                     case "BET":
                         for (Match eachMatch : matches) {
-                            if (eachPlayer[1].equals(eachMatch.getuuid()))
+                            if (eachPlayer[2].equals(eachMatch.getuuid()))
                                 eachMatch.matchExcute(
                                     players.get(playerNum), 
                                     eachPlayer[2], 
                                     Integer.parseInt(eachPlayer[3]), 
-                                    eachPlayer[4].charAt(0));
+                                    eachPlayer[4],
+                                    eachMatch
+                                    );
                         }
                         break;
                     case "DEPOSIT":

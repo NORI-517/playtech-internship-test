@@ -11,6 +11,12 @@ public class Player {
     public String getUuid(){
         return this.uuid;
     }
+    public long getBalance(){
+        return this.balance;
+    }
+    public void setBalance(long balance){
+        this.balance = balance;
+    }
     void bet() {
 
     }
@@ -25,19 +31,9 @@ public class Player {
             // legal operation
             this.balance -= subtractMoney;
         } else {
+            System.out.println("illegal activity");
             // illegal operation
             // incomplete
         }
     }
-
-    public void reward(long reward) {
-        this.balance += reward;
-    }
-
-    public void loss(long loss) {
-        this.balance -= loss;
-    }
-    /* I separated deposit, withdraw, reward, loss because they should have 
-     * exchange rate between in game coin and real life currency
-     */
 }

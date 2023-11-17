@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Match {
     private String uuid;
     private double rateA;
@@ -15,17 +18,35 @@ public class Match {
         return this.uuid;
     }
 
-    // excute the match
-    public void matchExcute(Player player, String matchUuid, int bet, char BetOn) {
-        //incomplete
+    public String getResult() {
+        return this.result;
     }
 
-    // show the whole match info
-    public void show() {
-        System.out.println(
-                this.uuid + ", " +
-                        this.rateA + ", " +
-                        this.rateB + ", " +
-                        this.result);
+    public double getRateA() {
+        return this.rateA;
+    }
+
+    public double getRateB() {
+        return this.rateB;
+    }
+
+    // excute the match
+    public void matchExcute(Player player, String matchUuid, int bet, String BetOn, Match match) {
+        if (player.getBalance() < bet) {
+            System.out.println("illegal activity");
+        } else {
+            if (match.result.equals(BetOn)) {
+                if (match.result == "A") {
+                    int reward = (int) (player.getBalance() - bet + bet * match.getRateA());
+                    player.setBalance(reward);
+                } else {
+                    int reward = (int) (player.getBalance() - bet + bet * match.getRateB());
+                    player.setBalance(reward);
+                }
+                ;
+            } else if (!match.result.equals(BetOn)) {
+                player.setBalance(player.getBalance() - bet);
+            }
+        }
     }
 }
