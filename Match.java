@@ -30,10 +30,11 @@ public class Match {
     }
 
     // excute the match
-    public void matchExcute(Host host, Player player, String matchUuid, int bet, String BetOn, Match match) {
+    public boolean matchExcute(Host host, Player player, String matchUuid, int bet, String BetOn, Match match) {
         // return true if there's no problem, if not, return false
         if (player.getBalance() < bet) {
             // illegal operation
+            return false;
         } else {
             // legal operation
             player.bet(bet);
@@ -41,12 +42,12 @@ public class Match {
             if (match.result.equals(BetOn)) {
                 // if you win
                 player.setTotalWin(player.getTotalWins() + 1);
-                if (match.result == "A") {
+                if (match.result.equals("A")) {
                     // if you win & bet on A
                     // calculated reward will be added to the players balance
                     int reward = (int) (player.getBalance() - bet + bet * match.getRateA());
                     player.setBalance(reward);
-                    player.setTotalEarn(player.getTotalEarn()+reward);
+                    player.setTotalEarn(player.getTotalEarn() + reward);
                     // withdraw coin from casino host balance
                     host.setCasinoBalance((int) (host.getCasinoBalance() - bet * match.getRateA()));
                 } else {
@@ -54,18 +55,20 @@ public class Match {
                     // calculated reward will be added to the players balance
                     int reward = (int) (player.getBalance() - bet + bet * match.getRateB());
                     player.setBalance(reward);
-                    player.setTotalEarn(player.getTotalEarn()+reward);
+                    player.setTotalEarn(player.getTotalEarn() + reward);
                     // withdraw coin from casino host balance
                     host.setCasinoBalance((int) (host.getCasinoBalance() - bet * match.getRateB()));
                 }
-            } else if (!match.result.equals(BetOn)) {
+            } else if (match.result.equals("DRAW")) {
+            } else {
                 // if you lose
                 // withdraw coin from players balance
                 player.setBalance(player.getBalance() - bet);
-                player.setTotalEarn(player.getTotalEarn()+bet);
+                player.setTotalEarn(player.getTotalEarn() + bet);
                 // add coin to the casino host balance
                 host.setCasinoBalance(host.getCasinoBalance() + bet);
             }
         }
+        return true;
     }
 }

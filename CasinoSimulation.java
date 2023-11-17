@@ -17,7 +17,6 @@ public class CasinoSimulation {
         matchDataReader("sample/match_data.txt");
         playerDataExcuter(host,"sample/player_data.txt");
         System.out.println(host.getCasinoBalance());
-        System.out.println(players.get(0).getTotalEarn());
     }
 
     // Based to the UUID, if there's new player, add to the players list
@@ -53,20 +52,21 @@ public class CasinoSimulation {
                     case "BET":
                         for (Match eachMatch : matches) {
                             if (eachPlayer[2].equals(eachMatch.getuuid()))
-                                eachMatch.matchExcute(
+                                if(!eachMatch.matchExcute(
                                         host,
                                         players.get(playerNum),
                                         eachPlayer[2],
                                         Integer.parseInt(eachPlayer[3]),
                                         eachPlayer[4],
-                                        eachMatch);
+                                        eachMatch))
+                                        illegalOperationDealer(host, players.get(playerNum), str);
                         }
                         break;
                     case "DEPOSIT":
                         players.get(playerNum).deposit(Integer.parseInt(eachPlayer[3]));
                         break;
                     case "WITHDRAW":
-                        players.get(playerNum).withdraw(Integer.parseInt(eachPlayer[3]));
+                        if(!players.get(playerNum).withdraw(Integer.parseInt(eachPlayer[3])))illegalOperationDealer(host, players.get(playerNum), str);
                         break;
                 }
             }

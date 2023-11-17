@@ -52,14 +52,14 @@ public class Player {
         this.balance += addMoney;
     }
 
-    public void withdraw(long subtractMoney) {
+    public boolean withdraw(long subtractMoney) {
         if (balance >= subtractMoney) {
             // legal operation
             this.balance -= subtractMoney;
+            return true;
         } else {
-            System.out.println("illegal activity WITHDRAW > BALANCE");
             // illegal operation
-            // incomplete
+            return false;
         }
     }
 
