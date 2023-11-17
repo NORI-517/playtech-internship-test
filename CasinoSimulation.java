@@ -17,6 +17,7 @@ public class CasinoSimulation {
         matchDataReader("sample/match_data.txt");
         playerDataExcuter(host,"sample/player_data.txt");
         System.out.println(host.getCasinoBalance());
+        System.out.println(players.get(0).getTotalEarn());
     }
 
     // Based to the UUID, if there's new player, add to the players list

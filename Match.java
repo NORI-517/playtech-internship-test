@@ -56,7 +56,7 @@ public class Match {
                     player.setBalance(reward);
                     player.setTotalEarn(player.getTotalEarn()+reward);
                     // withdraw coin from casino host balance
-                    host.setCasinoBalance((int) (host.getCasinoBalance() - bet * match.getRateA()));
+                    host.setCasinoBalance((int) (host.getCasinoBalance() - bet * match.getRateB()));
                 }
             } else if (!match.result.equals(BetOn)) {
                 // if you lose
