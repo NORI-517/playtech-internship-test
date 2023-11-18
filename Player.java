@@ -5,7 +5,7 @@ public class Player {
     private int totalBets;
     private int totalWins;
     private int totalMatchs;
-    private int totalEarn;
+    private int totalDeposit;
 
     // Constructor
     public Player(String uuid) {
@@ -14,7 +14,7 @@ public class Player {
         this.totalBets = 0;
         this.totalWins = 0;
         this.totalMatchs = 0;
-        this.totalEarn = 0;
+        this.totalDeposit = 0;
     }
 
     // getter and setter
@@ -38,21 +38,17 @@ public class Player {
         this.totalWins = totalWins;
     }
 
-    public int getTotalEarn() {
-        return this.totalEarn;
-    }
-
-    public void setTotalEarn(int earn) {
-        this.totalEarn = earn;
-    }
-
     public int getTotalMatchs() {
         return this.totalMatchs;
+    }
+    public int getTotalDeposit(){
+        return this.totalDeposit;
     }
 
     public void deposit(long addMoney) {
         // coin and real money are same rate? I've never been casino
         this.balance += addMoney;
+        this.totalDeposit += addMoney;
     }
 
     public boolean withdraw(long subtractMoney) {
@@ -65,7 +61,9 @@ public class Player {
             return false;
         }
     }
-
+    public void balanceManager(int value){
+        this.balance += value;
+    }
     // Count total bet
     public void bet(int bet) {
         totalBets += bet;
@@ -79,5 +77,13 @@ public class Player {
     public double winrate(){
         return (double)((int)((double)this.totalWins/this.totalMatchs*100))/100;
         //This doesnt work somehow Math.round((double)this.totalWins/this.totalMatchs*100)/100;
+    }
+
+    public void resetPlayerStats(){
+        this.balance = 0;
+        this.totalBets = 0;
+        this.totalWins = 0;
+        this.totalMatchs = 0;
+        this.totalDeposit = 0;
     }
 }

@@ -1,6 +1,9 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CasinoSimulation {
@@ -9,16 +12,16 @@ public class CasinoSimulation {
     // List of matches
     static List<Match> matches = new ArrayList<>();
     // List of illegal operation
-    static List<String> illegalAction = new ArrayList<>();
+    static HashMap<Player, String> illegalOperation = new HashMap<>();
+    static String matchfileLocation = "sample/match_data.txt";
+    static String player_dataLocation = "sample/player_data.txt";
+    static Host host = new Host();
 
     // Main method
     public static void main(String[] args) {
-        Host host = new Host();
-        matchDataReader("sample/match_data.txt");
-        playerDataExcuter(host,"sample/player_data.txt");
-        System.out.println(players.get(0).getBalance());
-        System.out.println(players.get(0).winrate());
-        System.out.println(host.getCasinoBalance());
+        matchDataReader(matchfileLocation);
+        playerDataExcuter(host, player_dataLocation);
+        resultPrinter();
     }
 
     // Based to the UUID, if there's new player, add to the players list
@@ -26,8 +29,8 @@ public class CasinoSimulation {
         // returns index of the player in the players list
         boolean playerExists = false;
         int count = 0;
-        for (Player each : players) {
-            if (each.getUuid().equals(playerId)) {
+        for (Player player : players) {
+            if (player.getUuid().equals(playerId)) {
                 playerExists = true;
                 return count;
             }
@@ -41,36 +44,55 @@ public class CasinoSimulation {
 
     // get data from player_data and excute
     // Read the file and excute line by line without storing
-    public static void playerDataExcuter(Host host,String fileLocation) {
+    static int count = 1;
+
+    public static void playerDataExcuter(Host host, String fileLocation) {
 
         try {
             RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
             String str;
+
             while ((str = file.readLine()) != null) {
                 String[] eachPlayer = str.split("[,]", 0);
+                String playerUuid = eachPlayer[0];
+                String operation = eachPlayer[1];
+                String matchUuid = eachPlayer[2];
+                int value = Integer.parseInt(eachPlayer[3]);
+                String betOn = (eachPlayer.length > 4) ? eachPlayer[4] : null;
                 // index of current player on players list
-                int playerNum = playerCheck(eachPlayer[0]);
-                switch (eachPlayer[1]) {
+                Player currentPlayer = players.get(playerCheck(playerUuid));
+                if (illegalOperation.keySet().contains(currentPlayer))
+                    continue;
+                switch (operation) {
                     case "BET":
-                        for (Match eachMatch : matches) {
-                            if (eachPlayer[2].equals(eachMatch.getuuid()))
-                                if(!eachMatch.matchExcute(
+                        for (Match currentMatch : matches) {
+                            if (matchUuid.equals(currentMatch.getuuid()))
+                                if (!currentMatch.matchExcute(
                                         host,
-                                        players.get(playerNum),
-                                        eachPlayer[2],
-                                        Integer.parseInt(eachPlayer[3]),
-                                        eachPlayer[4],
-                                        eachMatch))
-                                        illegalOperationDealer(str);
+                                        currentPlayer,
+                                        matchUuid,
+                                        value,
+                                        betOn,
+                                        currentMatch))
+                                    illegalOperationDealer(currentPlayer, str);
                         }
                         break;
                     case "DEPOSIT":
-                        players.get(playerNum).deposit(Integer.parseInt(eachPlayer[3]));
+                        currentPlayer.deposit(value);
                         break;
                     case "WITHDRAW":
-                        if(!players.get(playerNum).withdraw(Integer.parseInt(eachPlayer[3])))illegalOperationDealer(str);
+                        if (!currentPlayer.withdraw(value))
+                            illegalOperationDealer(currentPlayer, str);
                         break;
                 }
+            }
+            if (count > 0) {
+                for (Player player : players) {
+                    player.resetPlayerStats();
+                }
+                host.resetHostStats();
+                count--;
+                playerDataExcuter(host, fileLocation);
             }
             file.close();
         } catch (IOException e) {
@@ -100,11 +122,39 @@ public class CasinoSimulation {
     }
 
     // handle the illegal operation
-    public static void illegalOperationDealer(String action) {
-        illegalAction.add(action);
+    public static void illegalOperationDealer(Player player, String action) {
+        illegalOperation.put(player, action);
     }
 
     // write output
     public static void resultPrinter() {
+        try {
+            File result = new File("sample/filename.txt");
+            if (result.createNewFile()) {
+                FileWriter myWriter = new FileWriter("sample/filename.txt");
+                for (Player player : players) {
+                    if (!illegalOperation.keySet().contains(player)) {
+                        System.out.println(illegalOperation.keySet());
+                        System.out.println(player.getUuid());
+                        myWriter.write(player.getUuid() + " " + player.getBalance() + " " + String.valueOf(player.winrate()).replace('.', ',') + "\n\n");
+
+                    } else {
+                        System.out.println(illegalOperation.get(player));
+                        String[] str = illegalOperation.get(player).split(",");
+                        if(str[1] == "BET"){
+                            myWriter.write(str[0]+" "+str[1]+" "+str[2]+" "+str[3]+" "+str[4]);
+                        }else{
+                            myWriter.write(str[0]+" "+str[1]+" null "+str[3]+" null\n\n");
+                        }
+                    }
+                }
+                myWriter.write(String.valueOf(host.getCasinoBalance()));
+                myWriter.close();
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
