@@ -49,7 +49,7 @@ public class Match {
                     player.setBalance(reward);
                     player.setTotalEarn(player.getTotalEarn() + reward);
                     // withdraw coin from casino host balance
-                    host.setCasinoBalance((int) (host.getCasinoBalance() + bet - bet * match.getRateA()));
+                    host.setCasinoBalance((int) (host.getCasinoBalance() - bet * match.getRateA()));
                 } else {
                     // if you win & bet on B
                     // calculated reward will be added to the players balance
@@ -57,7 +57,7 @@ public class Match {
                     player.setBalance(reward);
                     player.setTotalEarn(player.getTotalEarn() + reward);
                     // withdraw coin from casino host balance
-                    host.setCasinoBalance((int) (host.getCasinoBalance() + bet - bet * match.getRateB()));
+                    host.setCasinoBalance((int) (host.getCasinoBalance() - bet * match.getRateB()));
                 }
             } else if (match.result.equals("DRAW")) {
             } else {

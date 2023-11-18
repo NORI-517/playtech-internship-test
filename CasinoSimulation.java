@@ -61,14 +61,14 @@ public class CasinoSimulation {
                                         Integer.parseInt(eachPlayer[3]),
                                         eachPlayer[4],
                                         eachMatch))
-                                        illegalOperationDealer(host, players.get(playerNum), str);
+                                        illegalOperationDealer(str);
                         }
                         break;
                     case "DEPOSIT":
                         players.get(playerNum).deposit(Integer.parseInt(eachPlayer[3]));
                         break;
                     case "WITHDRAW":
-                        if(!players.get(playerNum).withdraw(Integer.parseInt(eachPlayer[3])))illegalOperationDealer(host, players.get(playerNum), str);
+                        if(!players.get(playerNum).withdraw(Integer.parseInt(eachPlayer[3])))illegalOperationDealer(str);
                         break;
                 }
             }
@@ -100,20 +100,11 @@ public class CasinoSimulation {
     }
 
     // handle the illegal operation
-    public static void illegalOperationDealer(Host host,Player player, String action) {
-        System.out.println("deposit: "+player.getBalance());
-        System.out.println("earn:"+ player.getTotalEarn());
-        System.out.println(player.winrate());
-        System.out.println(player.getUuid());
-        System.out.println(players.get(0).getBalance());
+    public static void illegalOperationDealer(String action) {
         illegalAction.add(action);
-        player.getBalance();
-        host.setCasinoBalance(host.getCasinoBalance()+player.getTotalEarn());
-        System.out.println("host balance: "+host.getCasinoBalance());
     }
 
     // write output
     public static void resultPrinter() {
-
     }
 }
