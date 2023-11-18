@@ -26,11 +26,9 @@ public class CasinoSimulation {
     static int count = 1;
 
     public static void playerDataExcuter(Host host, String fileLocation) {
-
         try {
             RandomAccessFile file = new RandomAccessFile(fileLocation, "r");
             String str;
-
             while ((str = file.readLine()) != null) {
                 String[] eachPlayer = str.split("[,]", 0);
                 String playerUuid = eachPlayer[0];
@@ -126,21 +124,18 @@ public class CasinoSimulation {
     // write output
     public static void resultPrinter() {
         try {
-            File result = new File("sample/filename.txt");
+            File result = new File("sample/result.txt");
             if (result.createNewFile()) {
-                FileWriter myWriter = new FileWriter("sample/filename.txt");
+                FileWriter myWriter = new FileWriter("sample/result.txt");
                 for (Player player : players) {
                     if (!illegalOperation.keySet().contains(player)) {
-                        System.out.println(illegalOperation.keySet());
-                        System.out.println(player.getUuid());
                         myWriter.write(player.getUuid() + " " + player.getBalance() + " "
                                 + String.valueOf(player.winrate()).replace('.', ',') + "\n\n");
 
                     } else {
-                        System.out.println(illegalOperation.get(player));
                         String[] str = illegalOperation.get(player).split(",");
-                        if (str[1] == "BET") {
-                            myWriter.write(str[0] + " " + str[1] + " " + str[2] + " " + str[3] + " " + str[4]);
+                        if (str[1].equals("BET")) {
+                            myWriter.write(str[0] + " " + str[1] + " " + str[2] + " " + str[3] + " " + str[4] + "\n\n");
                         } else {
                             myWriter.write(str[0] + " " + str[1] + " null " + str[3] + " null\n\n");
                         }

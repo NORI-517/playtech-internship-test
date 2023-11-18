@@ -30,16 +30,15 @@ public class Match {
     }
 
     // excute the match
-    // return true if there's no problem, if not, return false
+    // return false if there's illegal operation, if not, return true
     public boolean matchExcute(Host host, Player player, String matchUuid, int bet, String BetOn, Match match) {
         // illegal operation
         if (player.getBalance() < bet)return false;
         // legal operation
-        player.bet(bet);
         player.matchCouont();
         if (match.result.equals(BetOn)) {
             // if you win
-            player.setTotalWin(player.getTotalWins() + 1);
+            player.winCounter();
             if (match.result.equals("A")) {
                 // if you win & bet on A
                 // calculated reward will be added to the players balance

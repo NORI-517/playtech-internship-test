@@ -2,19 +2,15 @@
 public class Player {
     private String uuid;
     private long balance;
-    private int totalBets;
     private int totalWins;
     private int totalMatchs;
-    private int totalDeposit;
 
     // Constructor
     public Player(String uuid) {
         this.uuid = uuid;
         this.balance = 0;
-        this.totalBets = 0;
         this.totalWins = 0;
         this.totalMatchs = 0;
-        this.totalDeposit = 0;
     }
 
     // getter and setter
@@ -30,27 +26,20 @@ public class Player {
         this.balance = balance;
     }
 
-    public int getTotalWins() {
-        return this.totalWins;
-    }
-
-    public void setTotalWin(int totalWins) {
-        this.totalWins = totalWins;
-    }
-
     public int getTotalMatchs() {
         return this.totalMatchs;
     }
-    public int getTotalDeposit(){
-        return this.totalDeposit;
+    public void winCounter(){
+        this.totalWins++;
     }
-
+    //Deposit money to the account
     public void deposit(long addMoney) {
         // coin and real money are same rate? I've never been casino
         this.balance += addMoney;
-        this.totalDeposit += addMoney;
     }
 
+    //Withdraw money from the account
+    // return false if there's illegal operation, if not, return true
     public boolean withdraw(long subtractMoney) {
         if (balance >= subtractMoney) {
             // legal operation
@@ -63,10 +52,6 @@ public class Player {
     }
     public void balanceManager(int value){
         this.balance += value;
-    }
-    // Count total bet
-    public void bet(int bet) {
-        totalBets += bet;
     }
 
     // Count total match the player played
@@ -81,9 +66,7 @@ public class Player {
 
     public void resetPlayerStats(){
         this.balance = 0;
-        this.totalBets = 0;
         this.totalWins = 0;
         this.totalMatchs = 0;
-        this.totalDeposit = 0;
     }
 }
