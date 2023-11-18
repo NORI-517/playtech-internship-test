@@ -7,11 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CasinoSimulation {
-    // List of players
     static List<Player> players = new ArrayList<>();
-    // List of matches
     static List<Match> matches = new ArrayList<>();
-    // List of illegal operation
     static HashMap<Player, String> illegalOperation = new HashMap<>();
     static String matchfileLocation = "sample/match_data.txt";
     static String player_dataLocation = "sample/player_data.txt";
@@ -22,24 +19,6 @@ public class CasinoSimulation {
         matchDataReader(matchfileLocation);
         playerDataExcuter(host, player_dataLocation);
         resultPrinter();
-    }
-
-    // Based to the UUID, if there's new player, add to the players list
-    public static int playerCheck(String playerId) {
-        // returns index of the player in the players list
-        boolean playerExists = false;
-        int count = 0;
-        for (Player player : players) {
-            if (player.getUuid().equals(playerId)) {
-                playerExists = true;
-                return count;
-            }
-            count++;
-        }
-        if (!playerExists) {
-            players.add(new Player(playerId));
-        }
-        return players.size() - 1;
     }
 
     // get data from player_data and excute
@@ -126,6 +105,24 @@ public class CasinoSimulation {
         illegalOperation.put(player, action);
     }
 
+    // Based to the UUID, if there's new player, add to the players list
+    public static int playerCheck(String playerId) {
+        // returns index of the player in the players list
+        boolean playerExists = false;
+        int count = 0;
+        for (Player player : players) {
+            if (player.getUuid().equals(playerId)) {
+                playerExists = true;
+                return count;
+            }
+            count++;
+        }
+        if (!playerExists) {
+            players.add(new Player(playerId));
+        }
+        return players.size() - 1;
+    }
+
     // write output
     public static void resultPrinter() {
         try {
@@ -136,15 +133,16 @@ public class CasinoSimulation {
                     if (!illegalOperation.keySet().contains(player)) {
                         System.out.println(illegalOperation.keySet());
                         System.out.println(player.getUuid());
-                        myWriter.write(player.getUuid() + " " + player.getBalance() + " " + String.valueOf(player.winrate()).replace('.', ',') + "\n\n");
+                        myWriter.write(player.getUuid() + " " + player.getBalance() + " "
+                                + String.valueOf(player.winrate()).replace('.', ',') + "\n\n");
 
                     } else {
                         System.out.println(illegalOperation.get(player));
                         String[] str = illegalOperation.get(player).split(",");
-                        if(str[1] == "BET"){
-                            myWriter.write(str[0]+" "+str[1]+" "+str[2]+" "+str[3]+" "+str[4]);
-                        }else{
-                            myWriter.write(str[0]+" "+str[1]+" null "+str[3]+" null\n\n");
+                        if (str[1] == "BET") {
+                            myWriter.write(str[0] + " " + str[1] + " " + str[2] + " " + str[3] + " " + str[4]);
+                        } else {
+                            myWriter.write(str[0] + " " + str[1] + " null " + str[3] + " null\n\n");
                         }
                     }
                 }
