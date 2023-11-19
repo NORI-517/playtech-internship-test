@@ -42,8 +42,9 @@ public class CasinoSimulation {
                     continue;
                 switch (operation) {
                     case "BET":
+                    boolean matchFound = false;
                         for (Match currentMatch : matches) {
-                            if (matchUuid.equals(currentMatch.getuuid()))
+                            if (matchUuid.equals(currentMatch.getuuid())){
                                 if (!currentMatch.matchExcute(
                                         host,
                                         currentPlayer,
@@ -52,7 +53,10 @@ public class CasinoSimulation {
                                         betOn,
                                         currentMatch))
                                     illegalOperationDealer(currentPlayer, str);
+                            matchFound = true;
+                            }
                         }
+                        if(!matchFound) System.out.println("Match does not exsist. Match UUID: "+matchUuid);
                         break;
                     case "DEPOSIT":
                         currentPlayer.deposit(value);
@@ -63,7 +67,7 @@ public class CasinoSimulation {
                         break;
                 }
             }
-            if (count > 0) {
+            if (count > 0 && !illegalOperation.isEmpty()) {
                 for (Player player : players) {
                     player.resetPlayerStats();
                 }
@@ -127,20 +131,30 @@ public class CasinoSimulation {
             File result = new File("sample/result.txt");
             if (result.createNewFile()) {
                 FileWriter myWriter = new FileWriter("sample/result.txt");
+                boolean legalPlayer = false;
+                boolean illegalPlayer = false;
                 for (Player player : players) {
                     if (!illegalOperation.keySet().contains(player)) {
                         myWriter.write(player.getUuid() + " " + player.getBalance() + " "
                                 + String.valueOf(player.winrate()).replace('.', ',') + "\n\n");
-
-                    } else {
+                        legalPlayer = true;
+                    }
+                }
+                if (legalPlayer == false)
+                    myWriter.write("\n\n");
+                for (Player player : players) {
+                    if (illegalOperation.keySet().contains(player)) {
                         String[] str = illegalOperation.get(player).split(",");
                         if (str[1].equals("BET")) {
                             myWriter.write(str[0] + " " + str[1] + " " + str[2] + " " + str[3] + " " + str[4] + "\n\n");
                         } else {
                             myWriter.write(str[0] + " " + str[1] + " null " + str[3] + " null\n\n");
                         }
+                        illegalPlayer = true;
                     }
                 }
+                if (illegalPlayer == false)
+                    myWriter.write("\n\n");
                 myWriter.write(String.valueOf(host.getCasinoBalance()));
                 myWriter.close();
             } else {

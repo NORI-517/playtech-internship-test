@@ -56,7 +56,7 @@ public class Match {
                 ;
             }
         } else if (match.result.equals("DRAW")) {
-            //
+            //draw
         } else {
             // if you lose
             // withdraw coin from players balance
